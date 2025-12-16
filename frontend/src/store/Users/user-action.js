@@ -1,7 +1,7 @@
-import { axiosInstance } from "../../utils/axios";
-import { userActions } from "./user-slice";
+import { axiosInstance } from "../../utils/axios.js";
+import { userActions } from "./user-slice.js";
 
-export const setSignup = (user) => async (dispatch) => {
+export const getSignup = (user) => async (dispatch) => {
   try {
     dispatch(userActions.setSignupRequest());
     const { data } = await axiosInstance.post("/api/v1/rent/user/signup", user);
@@ -64,7 +64,7 @@ export const resetPassword = (rePassword, token) => async (dispatch) => {
   }
 };
 
-// update
+// update passwords
 export const updatePassword = (passwords) => async (dispatch) => {
   try {
     dispatch(userActions.setPasswordRequest());
