@@ -1,10 +1,15 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getSignup } from "../../store/Users/user-action.js";
+import { userActions } from "../../store/Users/user-slice.js";
+import toast from "react-hot-toast";
 // import "../../CSS/Login.css";
 
 const Signup = () => {
-  //   const navigate = useNavigate();
-  //   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {isAuthenticated, errors} = useSelector((state) => state.user)
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -15,44 +20,41 @@ const Signup = () => {
 
   const { name, email, password, passwordConfirm, phoneNumber } = user;
 
-  const [avatar, setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState(
-    "/images/default_avatar.png"
-  );
+  useEffect(() => {
+    if(errors && errors.length > 0){
+      toast.error(errors);
+      dispatch(userActions.clearError());
+    } else if(isAuthenticated){
+      navigate("/");
+      toast.success("User Logged in Successfully")
+    }
+  },[isAuthenticated, errors, navigate])
 
   const submitHandler = (e) => {
     e.preventDefault();
     // Check if password and confirm password match
     if (password !== passwordConfirm) {
-      alert.error("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("email", email);
-    formData.set("password", password);
-    formData.set("passwordConfirm", passwordConfirm);
-    formData.set("phoneNumber", phoneNumber);
-    formData.set("avatar", avatar);
-
-    console.log(formData);
+    dispatch(getSignup(user));
   };
+
   const onChange = (e) => {
-    if (e.target.name === "avatar") {
-      const reader = new FileReader();
+    // if (e.target.name === "avatar") {
+    //   const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setAvatarPreview(reader.result);
-          setAvatar(reader.result);
-        }
-      };
+    //   reader.onload = () => {
+    //     if (reader.readyState === 2) {
+    //       setAvatarPreview(reader.result);
+    //       setAvatar(reader.result);
+    //     }
+    //   };
 
-      reader.readAsDataURL(e.target.files[0]);
-    } else {
-      setUser({ ...user, [e.target.name]: e.target.value });
-    }
+    //   reader.readAsDataURL(e.target.files[0]);
+    // } else {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    // }
   };
 
   return (
