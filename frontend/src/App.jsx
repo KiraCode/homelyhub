@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import { currentUser } from "./store/Users/user-action";
 import { useDispatch, useSelector } from "react-redux";
 import UpdatePassword from "./Components/User/UpdatePassword";
+import ForgetPassword from "./Components/User/ForgetPassword";
+import ResetPassword from "./Components/User/ResetPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +57,16 @@ function App() {
           id="updatepassword"
           path="user/updatePassword"
           element={user ? <UpdatePassword /> : <Navigate to="/login" />}
+        />
+        <Route
+          id="forgotpassword"
+          path="user/forgotPassword"
+          element={<ForgetPassword />}
+        />
+        <Route
+          id="resetpassword"
+          path="user/resetPassword"
+          element={<ResetPassword />}
         />
         {/* accomendation */}
         <Route
