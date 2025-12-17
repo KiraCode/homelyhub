@@ -1,20 +1,71 @@
 import React from "react";
 import Search from "./Search";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filter from "./Filter";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/Users/user-action.js";
+import toast from "react-hot-toast";
 
 const Header = () => {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutUser = () => {
+    dispatch(logout());
+    toast.success("User logged out successfully");
+    navigate("/");
+  };
   return (
     <>
-      <nav className='header row sticky-top '>
-        <img src='/assets/logo.png' alt='logo' className='logo' />
-        <div className='search_filter'>
+      <nav className="header row sticky-top ">
+        <img src="/assets/logo.png" alt="logo" className="logo" />
+        <div className="search_filter">
           <Search />
           <Filter />
         </div>
-        <Link to='/login'>
-          <span class='material-symbols-outlined web_logo'>account_circle</span>
-        </Link>
+        {!isAuthenticated && !user && (
+          <Link to="/login">
+            <span class="material-symbols-outlined web_logo">
+              account_circle
+            </span>
+          </Link>
+        )}
+        {isAuthenticated && user && (
+          <div className="dropdown">
+            <span
+              className="material-symbols-outlined web_logo dropdown-toggle"
+              href="#"
+              role="buttton"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {user.avatar.url && (
+                <img
+                  src={user.avatar.url}
+                  alt="icon"
+                  className="user-img rounded-circle w-25 h-25"
+                />
+              )}
+              {!user.avatar.url && "account_circle"}
+            </span>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <Link className="dropdown-item" to="/profile">
+                  My Account
+                </Link>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={logoutUser}
+                >Logout</button>
+              </li>
+            </ul>
+          </div>
+        )}
       </nav>
     </>
   );
