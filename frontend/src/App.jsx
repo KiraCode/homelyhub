@@ -2,6 +2,7 @@ import "./App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -15,8 +16,20 @@ import Profile from "./Components/User/Profile";
 import EditProfile from "./Components/User/EditProfile";
 import MyBookings from "./Components/Mybookings/MyBookings";
 import BookingDetails from "./Components/Mybookings/BookingDetails";
+import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { currentUser } from "./store/Users/user-action";
+import { useDispatch, useSelector } from "react-redux";
+import UpdatePassword from "./Components/User/UpdatePassword";
+import ForgetPassword from "./Components/User/ForgetPassword";
+import ResetPassword from "./Components/User/ResetPassword";
 
 function App() {
+  const dispatch = useDispatch();
+  const { errors, user } = useSelector((state) => state.user);
+  useEffect(() => {
+    dispatch(currentUser);
+  }, [dispatch]);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="*" element={<Main />} id="main" exact>
@@ -30,8 +43,31 @@ function App() {
         {/* Login */}
         <Route id="login" path="login" element={<Login />} />
         <Route id="signup" path="signup" element={<Signup />} />
-        <Route id="profile" path="profile" element={<Profile />} />
-        <Route id="editprofile" path="editprofile" element={<EditProfile />} />
+        <Route
+          id="profile"
+          path="profile"
+          element={user ? <Profile /> : <Navigate to="/login" />}
+        />
+        <Route
+          id="editprofile"
+          path="editprofile"
+          element={user ? <EditProfile /> : <Navigate to="/login" />}
+        />
+        <Route
+          id="updatepassword"
+          path="user/updatePassword"
+          element={user ? <UpdatePassword /> : <Navigate to="/login" />}
+        />
+        <Route
+          id="forgotpassword"
+          path="user/forgotPassword"
+          element={<ForgetPassword />}
+        />
+        <Route
+          id="resetpassword"
+          path="user/resetPassword"
+          element={<ResetPassword />}
+        />
         {/* accomendation */}
         <Route
           id="accomodation"
@@ -54,6 +90,7 @@ function App() {
   return (
     <div className="App">
       {/* <Home /> */}
+      <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={router} />
     </div>
   );
