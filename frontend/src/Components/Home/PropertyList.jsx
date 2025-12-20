@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import { getAllPropertys } from "../../Store/Property/property-action";
+import { propertyAction } from "../../store/Property/property-slice.js";
+import { getAllProperties } from "../../store/Property/property-action.js";
 // import "../../CSS/Home.css";
 
 const Card = ({ image, name, address, price }) => {
@@ -29,99 +30,57 @@ const Card = ({ image, name, address, price }) => {
 };
 
 const PropertyList = () => {
-  // const propertys = useSelector((state) => state.propertys);
-  // console.log(propertys);
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getAllPropertys());
-  // }, [dispatch]);
+  const [currentPage, setCurrentPage] = useState({ page: 1 });
+  const dispatch = useDispatch();
+  const { properties, totalProperties } = useSelector(
+    (state) => state.properties
+  );
 
-  const cardsData = [
-    {
-      id: 1,
-      image: "/assets/image1.jpeg",
-      name: "Delightful farm cottage - Mysore",
-      address: "Mysuru, Karnataka, India",
-      price: 1999,
-    },
-    {
-      id: 2,
-      image: "/assets/property2.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
+  const lastPage = Math.ceil(totalProperties / 12);
 
-    {
-      id: 3,
-      image: "/assets/property3.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "chennai, Tamil nadu, India",
-      price: 2999,
-    },
-    {
-      id: 4,
-      image: "/assets/property4.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "cochin, Kerala, India",
-      price: 2999,
-    },
-    {
-      id: 5,
-      image: "/assets/property5.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-    {
-      id: 6,
-      image: "/assets/property6.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-    {
-      id: 7,
-      image: "/assets/property7.webp",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-    {
-      id: 8,
-      image: "/assets/image1.jpeg",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-    {
-      id: 9,
-      image: "/assets/image1.jpeg",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-    {
-      id: 10,
-      image: "/assets/image1.jpeg",
-      name: "Delightful farm cottage - Mysore",
-      address: "Manali, Himachal Pradesh, India",
-      price: 2999,
-    },
-  ];
-
+  useEffect(() => {
+    const fetchProperties = async (page) => {
+      dispatch(propertyAction.updateSearchParams(page));
+      dispatch(getAllProperties());
+    };
+    fetchProperties(currentPage);
+  }, [currentPage, dispatch]);
   return (
-    <div className="propertylist">
-      {cardsData.map((card) => (
-        <Card
-          key={card.id}
-          image={card.image}
-          name={card.name}
-          address={card.address}
-          price={card.price}
-        />
-      ))}
-    </div>
+    <>
+      {properties.kength === 0 ? (
+        <p className="not_found">Property Not Found</p>
+      ) : (
+        <div className="propertylist">
+          {properties.map((property) => (
+            <Card
+              key={property.id}
+              image={property.images[0].url}
+              name={property.propertyName}
+              address={`${property.address.city}, ${property.address.state}, ${property.address.pincode}`}
+              price={property.price}
+            />
+          ))}
+        </div>
+      )}
+      <div className="pagination">
+        <button
+          className="previous_btn"
+          onClick={() => setCurrentPage((prev) => ({ page: prev.page - 1 }))}
+          disabled={currentPage.page === 1}
+        >
+          <span className="material-symbols-outlined">arrow_back_ios_new</span>
+        </button>
+        <button
+          className="next_btn"
+          onClick={() => setCurrentPage((prev) => ({ page: prev.page + 1 }))}
+          disabled={properties.length < 12 || currentPage.page === lastPage}
+        >
+          <span className="material-symbols-outlined">
+            arrow_forward_ios
+          </span>
+        </button>
+      </div>
+    </>
   );
 };
 

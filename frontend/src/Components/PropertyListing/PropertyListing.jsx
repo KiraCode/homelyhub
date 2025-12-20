@@ -9,14 +9,7 @@ import { useParams } from "react-router-dom";
 // import { getPropertyList } from "../../Store/PropertyListing/propertylist-action";
 
 const PropertyListing = () => {
-  // const dispatch = useDispatch();
-  // // const propertylist = useSelector((state) => state.propertylist);
-  // // console.log(propertylist);
-  // // const { id } = useParams();
 
-  // useEffect(() => {
-  //   dispatch(getPropertyList("65ae3ee075ff5406488e7e7d"));
-  // }, [dispatch]);
 
   return (
     <div className="property-container">
