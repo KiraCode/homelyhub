@@ -5,10 +5,10 @@ import { propertyAction } from "../../store/Property/property-slice.js";
 import { getAllProperties } from "../../store/Property/property-action.js";
 // import "../../CSS/Home.css";
 
-const Card = ({ image, name, address, price }) => {
+const Card = ({ image, name, address, price, id }) => {
   return (
     <figure className="property">
-      <Link to="/propertylist">
+      <Link to={`/propertylist/${id}`}>
         <img src={image} alt="Propertyimg" />
       </Link>
       <h4>{name}</h4>
@@ -47,17 +47,18 @@ const PropertyList = () => {
   }, [currentPage, dispatch]);
   return (
     <>
-      {properties.kength === 0 ? (
+      {properties.length === 0 ? (
         <p className="not_found">Property Not Found</p>
       ) : (
         <div className="propertylist">
           {properties.map((property) => (
             <Card
-              key={property.id}
+              key={property._id}
               image={property.images[0].url}
               name={property.propertyName}
               address={`${property.address.city}, ${property.address.state}, ${property.address.pincode}`}
               price={property.price}
+              id={property._id}
             />
           ))}
         </div>
@@ -75,9 +76,7 @@ const PropertyList = () => {
           onClick={() => setCurrentPage((prev) => ({ page: prev.page + 1 }))}
           disabled={properties.length < 12 || currentPage.page === lastPage}
         >
-          <span className="material-symbols-outlined">
-            arrow_forward_ios
-          </span>
+          <span className="material-symbols-outlined">arrow_forward_ios</span>
         </button>
       </div>
     </>

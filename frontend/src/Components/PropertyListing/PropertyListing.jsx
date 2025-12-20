@@ -6,10 +6,27 @@ import PropertyAmenities from "./PropertyAmenities";
 import PropertMapInfo from "./PropertMapInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import { getPropertyList } from "../../Store/PropertyListing/propertylist-action";
+import { getPropertyDetails } from "../../store/PropertyDetails/propertyDetails-action.js";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PropertyListing = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { loading, propertyDetails } = useSelector(
+    (state) => state.propertyDetails
+  );
 
+  useEffect(() => {
+    dispatch(getPropertyDetails(id));
+  }, [dispatch, id]);
+
+  if (loading || !propertyDetails) {
+    return (
+      <div className="row justify-content-round mt-5">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="property-container">

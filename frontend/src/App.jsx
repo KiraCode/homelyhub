@@ -37,7 +37,7 @@ function App() {
         <Route
           element={<PropertyListing />}
           id="propertyListing"
-          path="propertylist"
+          path="propertylist/:id"
           exact
         />
         {/* Login */}

@@ -1,15 +1,13 @@
 // Filter.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilterModal from "./FilterModal";
+import { useDispatch } from "react-redux";
+import { propertyAction } from "../../store/Property/property-slice.js";
+import { getAllProperties } from "../../store/Property/property-action.js";
 
 const Filter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({
-    priceRange: null,
-    amenities: [],
-    entireRoom: false,
-    propertyType: null,
-  });
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   const handleShowAllPhotos = () => {
     setIsModalOpen(true);
@@ -18,6 +16,12 @@ const Filter = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(propertyAction.updateSearchParams(selectedFilters));
+    dispatch(getAllProperties());
+  }, [selectedFilters, dispatch]);
 
   const handleFilterChange = (filterName, value) => {
     setSelectedFilters((prevFilters) => ({
@@ -29,8 +33,9 @@ const Filter = () => {
   return (
     <>
       <span
-        className='material-symbols-outlined filter'
-        onClick={handleShowAllPhotos}>
+        className="material-symbols-outlined filter"
+        onClick={handleShowAllPhotos}
+      >
         tune
       </span>
       {isModalOpen && (
