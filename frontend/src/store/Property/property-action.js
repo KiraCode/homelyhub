@@ -1,4 +1,4 @@
-import { propertyAction } from "../property-slice.js";
+import { propertyAction } from "../Property/property-slice.js";
 import { axiosInstance } from "../../utils/axios.js";
 export const getAllProperties = () => async (dispatch, getState) => {
   try {
