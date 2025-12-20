@@ -5,6 +5,8 @@ import Filter from "./Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/Users/user-action.js";
 import toast from "react-hot-toast";
+import { propertyAction } from "../../store/Property/property-slice.js";
+import { getAllProperties } from "../../store/Property/property-action.js";
 
 const Header = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -16,10 +18,24 @@ const Header = () => {
     toast.success("User logged out successfully");
     navigate("/");
   };
+
+  const refreshFunction = () => {
+    dispatch(propertyAction.updateSearchParams({}));
+    dispatch(getAllProperties());
+  };
+
   return (
     <>
       <nav className="header row sticky-top ">
-        <img src="/assets/logo.png" alt="logo" className="logo" />
+        <Link to="/">
+          {" "}
+          <img
+            src="/assets/logo.png"
+            alt="logo"
+            className="logo"
+            onClick={refreshFunction}
+          />
+        </Link>
         <div className="search_filter">
           <Search />
           <Filter />
@@ -61,7 +77,9 @@ const Header = () => {
                   className="dropdown-item"
                   type="button"
                   onClick={logoutUser}
-                >Logout</button>
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
