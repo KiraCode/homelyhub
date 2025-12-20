@@ -15,6 +15,10 @@ const propertyDetailsSlice = createSlice({
       state.error = action.payload;
       action.loading = false;
     },
+    getErrors(state, action) {
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
 

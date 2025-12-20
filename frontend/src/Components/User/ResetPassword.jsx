@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
+  const { token } = useParams();
   const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
@@ -63,8 +64,8 @@ const ResetPassword = () => {
               name="passwordConfirm"
               validators={{
                 onChange: ({ value, fieldApi }) => {
-                  value !== fieldApi.form.getFieldValue("password")
-                    ? "Password ddn't matched"
+                  return value !== fieldApi.form.getFieldValue("password")
+                    ? "Password didn't matched"
                     : undefined;
                 },
               }}
