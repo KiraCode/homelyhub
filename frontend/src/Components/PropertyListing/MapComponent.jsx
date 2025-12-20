@@ -10,8 +10,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-const MapComponent = () => {
-  const city = "Tirunelveli Town";
+const MapComponent = ({ address }) => {
+  const city = `${address.city}, ${address.state}, ${address.pincode}`;
   const [coordinates, setCoordinates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
