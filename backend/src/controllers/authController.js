@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import { promisify } from "node:util";
 import { forgotPasswordMailGenContent, sendMail } from "../utils/mail.js";
 import crypto from "crypto";
+import { log } from "node:console";
+import imageKit from "../utils/imagekitio.js";
 
 const defaultAvatar = "https://i.pravatar.cc/150?img=27";
 
@@ -131,11 +133,11 @@ const protect = async (req, res, next) => {
 const updateMe = async (req, res) => {
   try {
     const filterBody = filterObj(req.body, "name", "phoneNumber", "avatar");
-
+console.log(filterBody);
     if (req.body.avatar !== undefined) {
       let based64Data = req.body.avatar;
 
-      const uploadResponse = await ImageTrackList.upload({
+      const uploadResponse = await imageKit.upload({
         file: based64Data,
         fileName: `avatar_${Date.now()}.jpg`,
         folder: "avatars",
@@ -210,7 +212,7 @@ const forgotPassword = async (req, res) => {
 
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `http://localhost:5173/user/resetPassword/${resetToken}`;
+  const resetURL = `http://localhost:3000/user/resetPassword/${resetToken}`;
 
   // 3. send the email
   try {
@@ -284,5 +286,5 @@ export {
   updateMe,
   forgotPassword,
   updatePassword,
-  resetPassword
+  resetPassword,
 };
