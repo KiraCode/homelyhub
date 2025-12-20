@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const propertyDetailsSlice = createSlice({
-  name: "propertyDetails",
+  name: "propertydetails",
   initialState: {
     propertyDetails: null,
     loading: false,
@@ -12,8 +12,8 @@ const propertyDetailsSlice = createSlice({
       state.loading = true;
     },
     getPropertyDetails(state, action) {
-      state.error = action.payload;
-      action.loading = false;
+      state.propertyDetails = action.payload;
+      state.loading = false;
     },
     getErrors(state, action) {
       state.error = action.payload;

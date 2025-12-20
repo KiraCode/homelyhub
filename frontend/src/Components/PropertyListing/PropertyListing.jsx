@@ -27,37 +27,52 @@ const PropertyListing = () => {
       </div>
     );
   }
+  console.log(propertyDetails);
+
+  const {
+    propertyName,
+    address,
+    description,
+    images,
+    amenities,
+    maximumGuest,
+    price,
+    currentBookings,
+  } = propertyDetails;
 
   return (
     <div className="property-container">
-      <p className="property-header">
-        Cider Chalet-F: 2BRK MountainView Apartment
-      </p>
+      <p className="property-header">{propertyName}</p>
       <h6 className="property-location">
         <span class="material-symbols-outlined">house</span>
-        <span className="location">Manali, Himachal Pradesh, India</span>
+        <span className="location">{`${address?.area}, ${address?.city}, ${address?.state}`}</span>
       </h6>
-      <PropertyImg />
+      <PropertyImg images={images} />
       <div className="middle-container row">
         <div className="des-and-amenities col-md-8 col-sm-12 col-12">
           <h2 className="property-description-header">Description</h2>
           <p className="property-description">
-            Ménage - By The Beas , A colonial style hill cottage near Manali,
-            this delightful vacation home promises the perfect mix of hills with
-            a scenic river side in the privacy of your own space. <br></br>
-            <br></br>Max number of guests: 4
+            {description} <br></br>
+            <br></br>Max number of guests: {maximumGuest}
           </p>
           <hr></hr>
-          <PropertyAmenities />
+          <PropertyAmenities amenities={amenities} />
         </div>
         <div className="property-payment col-md-4 col-sm-12 col-12">
-          <PaymentForm />
+          <PaymentForm
+            propertyId={id}
+            price={price}
+            propertyName={propertyName}
+            address={address}
+            maximumGuest={maximumGuest}
+            currentBookings={currentBookings}
+          />
         </div>
       </div>
       <hr></hr>
       <div className="property-map">
         <div className="map-image-exinfo-container row">
-          <PropertMapInfo />
+          <PropertMapInfo address={address} />
         </div>
       </div>
     </div>

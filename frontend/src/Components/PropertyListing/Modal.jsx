@@ -21,7 +21,7 @@ const Modal = ({ images, onClose }) => {
         </button>
         <div className="modal-images-container">
           {images.map((image, index) => (
-            <img key={index} src={image} alt={`Image ${index + 1}`} />
+            <img key={index} src={image.url} alt={`Image ${index + 1}`} />
           ))}
         </div>
       </div>
