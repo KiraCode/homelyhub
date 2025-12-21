@@ -9,6 +9,8 @@ export const getPropertyDetails = (id) => async (dispatch) => {
       throw new Error("Could not fetch any property details");
     }
     const { data } = response.data;
+    console.log(data, 'data');
+    
     dispatch(propertyDetailsAction.getPropertyDetails(data));
   } catch (error) {
     dispatch(propertyDetailsAction).getErrors(error.response.data.error);

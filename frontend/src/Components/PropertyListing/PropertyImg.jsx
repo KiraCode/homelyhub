@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 
-const PropertyImg = () => {
+const PropertyImg = ({ images }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleShowAllPhotos = () => {
@@ -22,48 +22,35 @@ const PropertyImg = () => {
               borderTopLeftRadius: "10px",
               borderBottomLeftRadius: "10px",
             }}
-            src="/assets/image1.jpeg"
+            src={images[0].url}
             alt="houses"
           />
         </div>
-        <div>
-          <img className="images" src="/assets/image2.jpeg" alt="houses" />
-        </div>
+        {/* render the remaining 4 images in a row */}
+        {images.slice(1, 4).map((image, index) => (
+          <div key={index}>
+            <img
+              src={image.url}
+              alt={`property-${index + 2}`}
+              className="images"
+            />
+          </div>
+        ))}
         <div>
           <img
+            src={images[5].url}
+            alt={"property-5"}
             className="images"
-            style={{ borderTopRightRadius: "10px" }}
-            src="/assets/image3.jpeg"
-            alt="houses"
+            style={{
+              borderTopLeftRadius: "10px",
+            }}
           />
-        </div>
-        <div>
-          <img className="images" src="/assets/image4.jpeg" alt="houses" />
-        </div>
-        <div>
-          <img
-            className="images"
-            style={{ borderBottomRightRadius: "10px" }}
-            src="/assets/image5.jpeg"
-            alt="houses"
-          />
-          <button className=" similar-photos" onClick={handleShowAllPhotos}>
-            <span class="material-symbols-outlined">photo_library</span>
+          <button className="similar-photos" onClick={handleShowAllPhotos}>
+            <span className="material-symbols-outlined">photo_library</span>
           </button>
         </div>
       </div>
-      {isModalOpen && (
-        <Modal
-          images={[
-            "/assets/image1.jpeg",
-            "/assets/image2.jpeg",
-            "/assets/image3.jpeg",
-            "/assets/image4.jpeg",
-            "/assets/image5.jpeg",
-          ]}
-          onClose={handleCloseModal}
-        />
-      )}
+      {isModalOpen && <Modal images={images} onClose={handleCloseModal} />}
     </>
   );
 };

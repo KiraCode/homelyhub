@@ -1,7 +1,7 @@
 import React from "react";
 import MapComponent from "./MapComponent";
 
-const PropertMapInfo = () => {
+const PropertMapInfo = ({address}) => {
   return (
     <>
       <div className="map-image-container col-md-6 col-sm-12 col-12">
@@ -11,7 +11,7 @@ const PropertMapInfo = () => {
           className="map-image"
           src="https://www.thestatesman.com/wp-content/uploads/2020/04/googl_ED.jpg"
         /> */}
-        <MapComponent />
+        <MapComponent address={address}/>
       </div>
       <div className="extra-info col-md-6 col-sm-12 col-12">
         <h2 className="extra-heading">Extra Info</h2>
