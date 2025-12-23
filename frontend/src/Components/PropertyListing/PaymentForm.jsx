@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 
 import { DatePicker, Space } from "antd";
+import { useForm } from "@tanstack/react-form";
 
-const PaymentForm = () => {
-  const [checkinDate, setCheckinDate] = useState(null);
-  const [checkoutDate, setCheckoutDate] = useState(null);
-  const { RangePicker } = DatePicker;
-  const handleDateChange = (value, dateString) => {
-    setCheckinDate(dateString[0]);
-    setCheckoutDate(dateString[1]);
-  };
+const PaymentForm = ({
+  price,
+  propertyName,
+  address,
+  maximumGuest,
+  propertyId,
+  currentBookings,
+}) => {
+  const form = useForm({
+    defaultValues: { dateRange: [], guests: "", name: "", phoneNumber: "" },
+  });
+
   return (
     <div className="form-container">
       <form className="payment-form">
