@@ -87,9 +87,9 @@ const verifyPymentAndCreateBooking = async (req, res) => {
       razorpayData;
 
     //   verify payment signature
-    const body = razor_order_id + "|" + razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
-      .createHash("sha256", process.env.RAZORPAY_SECRET)
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(body.toString())
       .digest("hex");
 
