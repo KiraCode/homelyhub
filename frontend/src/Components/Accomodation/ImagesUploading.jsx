@@ -1,38 +1,43 @@
 import React, { useState } from "react";
+import { Trash2 } from "lucide-react";
 
-const ImagesUploading = () => {
-  const [image, setImage] = useState("");
-  const [imagesList, setImagesList] = useState([]);
+const ImagesUploading = ({ field }) => {
+  const [imageInput, setImageInput] = useState("");
 
-  const handleImage = (event) => {
+  const handleImageInputChange = (event) => {
     setImage(event.target.value);
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
     if (file) {
-      // Read the file as data URL
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target.result);
+        const newImage = {
+          public_id: `file_${Date.now()}`,
+          url: e.target.result,
+        };
+        field.handleChange([...field.state.value, newImage]);
       };
       reader.readAsDataURL(file);
-      handleAddImage();
     }
   };
 
   const handleAddImage = () => {
-    if (image) {
-      setImagesList([...imagesList, image]);
-      setImage("");
+    if (imageInput) {
+      const newImage = {
+        public_id: `url_${Date.now()}`,
+        url: imageInput,
+      };
+      field.handleChange([...field.state.value, newImage]);
+      setImageInput("");
     }
   };
 
   const handleDeleteImage = (index) => {
-    const updatedImagesList = [...imagesList];
-    updatedImagesList.splice(index, 1);
-    setImagesList(updatedImagesList);
+    const updatedImages = [...field.state.value];
+    updatedImages.splice(index, 1);
+    field.handleChange(updatedImages);
   };
 
   return (
@@ -44,21 +49,28 @@ const ImagesUploading = () => {
           className="image-link"
           type="text"
           placeholder="Add using link /.jpg"
-          onChange={handleImage}
-          value={image}
+          onChange={handleImageInputChange}
+          value={imageInput}
         />
         <button className="add-button" type="button" onClick={handleAddImage}>
           Add
         </button>
       </div>
       <div className="image-list-container">
-        {imagesList.map((imageUrl, index) => (
-          <img
-            key={index}
-            alt={`Ige-${index}`}
-            src={imageUrl}
-            onClick={() => handleDeleteImage(index)}
-          />
+        {field.state.value.map((imageObj, index) => (
+          <div className="image-preview-box">
+            <img
+              key={index}
+              alt={`Ige-${index}`}
+              src={imageObj.url}
+              className="preview-image"
+              height="200px"
+              width="200px"
+            />
+            <button type="button" onClick={() => handleDeleteImage(index)}>
+              <Trash2 />
+            </button>
+          </div>
         ))}
         <label className="upload">
           <input
