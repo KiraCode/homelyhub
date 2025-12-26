@@ -79,12 +79,12 @@ function App() {
         <Route
           id="mybookings"
           path="user/bookings"
-          element={<MyBookings />}
+          element={user ? <MyBookings /> : <Navigate to={"/login"} />}
         />
         <Route
           id="bookingdetails"
-          path="user/mybookings/bookingdetails"
-          element={<BookingDetails />}
+          path="user/mybookings/:bookingId"
+          element={user ? <BookingDetails /> : <Navigate to={"/login"} />}
         />
         <Route
           id="payment"
