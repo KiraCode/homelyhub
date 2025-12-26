@@ -18,11 +18,13 @@ import MyBookings from "./Components/Mybookings/MyBookings";
 import BookingDetails from "./Components/Mybookings/BookingDetails";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
-import { currentUser } from "./store/Users/user-action";
+import { currentUser } from "./store/Users/user-action.js";
 import { useDispatch, useSelector } from "react-redux";
 import UpdatePassword from "./Components/User/UpdatePassword";
 import ForgetPassword from "./Components/User/ForgetPassword";
 import ResetPassword from "./Components/User/ResetPassword";
+import Payment from "./Components/Payment/Payment.jsx";
+import NotFound from "./Components/NotFound.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -76,14 +78,21 @@ function App() {
         />
         <Route
           id="mybookings"
-          path="user/mybookings"
-          element={<MyBookings />}
+          path="user/bookings"
+          element={user ? <MyBookings /> : <Navigate to={"/login"} />}
         />
         <Route
           id="bookingdetails"
-          path="user/mybookings/bookingdetails"
-          element={<BookingDetails />}
+          path="user/mybookings/:bookingId"
+          element={user ? <BookingDetails /> : <Navigate to={"/login"} />}
         />
+        <Route
+          id="payment"
+          path="payment/:propertyId"
+          element={user ? <Payment /> : <Navigate to={"/login"} />}
+        />
+        {/* catch all role for 404 not found - must e the last route */}
+        <Route path="*" element={<NotFound />} />
       </Route>
     )
   );
