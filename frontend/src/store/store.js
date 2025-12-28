@@ -12,6 +12,7 @@ const store = configureStore({
     propertyDetails: propertyDetailsSlice.reducer,
     payment: paymentSlice.reducer,
     booking: bookingSlice.reducer,
+    accomodation: accomodation.reducer,
   },
 });
 

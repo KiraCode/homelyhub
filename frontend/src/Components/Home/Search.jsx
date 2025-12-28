@@ -65,7 +65,7 @@ const Search = () => {
           onChange={(e) => updateKeyword("guests", +e.target.value)}
         />
         <span
-          class="material-symbols-outlined searchicon"
+          className="material-symbols-outlined searchicon"
           onClick={searchHandler}
         >
           search

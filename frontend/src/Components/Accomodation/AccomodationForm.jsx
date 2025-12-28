@@ -3,8 +3,15 @@ import ImagesUploading from "./ImagesUploading";
 import { useForm } from "@tanstack/react-form";
 import AddressField from "./AddressField";
 import AmenitiesField from "./AmenitiesField";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createAccomodation } from "../../store/Accomodation/accomodation-action";
+import toast from "react-hot-toast";
 
 const AccomodationForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state = state.accomodation));
   const form = useForm({
     defaultValues: {
       name: "",
@@ -22,7 +29,29 @@ const AccomodationForm = () => {
     },
     onSubmit: async ({ value }) => {
       try {
-      } catch (error) {}
+        console.log(value);
+        await dispatch(
+          createAccomodation({
+            propertyName: value.name,
+            description: value.description,
+            propertyType: value.propertyType,
+            roomType: value.roomType,
+            extraInfo: value.extraInfo,
+            images: value.images,
+            amenities: value.amenities,
+            address: value.address,
+            checkIn: value.checkIn,
+            checkOut: value.checkOut,
+            maximumGuest: value.maximumGuest,
+            price: value.price,
+          })
+        );
+        toast.success("New Property created Successfully");
+        navigate("/accomodation");
+      } catch (error) {
+        toast.error(error.message);
+        console.error(error.message);
+      }
     },
   });
   return (
@@ -196,8 +225,8 @@ const AccomodationForm = () => {
             </form.Field>
           </div>
         </div>
-        <button className="save" type="Submit ">
-          Save
+        <button className="save" type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save"}
         </button>
       </form>
     </div>

@@ -25,6 +25,7 @@ import ForgetPassword from "./Components/User/ForgetPassword";
 import ResetPassword from "./Components/User/ResetPassword";
 import Payment from "./Components/Payment/Payment.jsx";
 import NotFound from "./Components/NotFound.jsx";
+import AccomodationForm from "./Components/Accomodation/AccomodationForm.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,11 @@ function App() {
           id="accomodation"
           path="accomodation"
           element={<Accomodation />}
+        />
+        <Route
+          id="accomodationForm"
+          path="accomodationForm"
+          element={user ? <AccomodationForm /> : <Navigate to={"/login"} />}
         />
         <Route
           id="mybookings"

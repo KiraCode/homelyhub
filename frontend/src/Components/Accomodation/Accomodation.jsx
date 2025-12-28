@@ -1,32 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../CSS/Accomodation.css";
 import ProgressSteps from "../ProgressSteps";
 
 import AccomodationForm from "./AccomodationForm";
 import MyAccomodation from "./MyAccomdation";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllAccomodation } from "../../store/Accomodation/accomodation-action";
+import LoadingSpinner from "../LoadingSpinner";
 
 const Accomodation = () => {
-  const navigate = useNavigate();
-  const [isShowForm, setShowForm] = useState(false);
-  const [isShowbutton, setShowbutton] = useState(true);
+  const dispatch = useDispatch();
+  const { accomodation, loading } = useSelector((state) => state.accomodation);
 
-  const showForm = () => {
-    setShowbutton(false);
-    setShowForm(true);
-  };
-
+  useEffect(() => {
+    dispatch(getAllAccomodation());
+  }, [dispatch]);
   return (
     <>
       <ProgressSteps accomodation />
       <div className="accom-container">
-        {isShowbutton && (
-          <button className="add-new-place" onClick={showForm}>
-            + Add new place
-          </button>
+        <Link to="/accomodationform">
+          <button className="add-new-place">+ Add new place</button>
+        </Link>
+        {loading && <LoadingSpinner />}
+        {accomodation.length > 0 && !loading && (
+          <MyAccomodation accomodation={accomodation} loading={loading} />
         )}
-        {isShowbutton && <MyAccomodation />}
-        {isShowForm && <AccomodationForm />}
       </div>
     </>
   );
